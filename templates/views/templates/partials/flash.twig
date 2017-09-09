@@ -1,0 +1,27 @@
+{% if flash.getMessage('success') %}
+	<div class="alert alert-success alert-dismissable fade in">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		{{ flash.getMessage('success') | first }}
+	</div>
+{% endif %}
+
+{% if flash.getMessage('info') %}
+	<div class="alert alert-info alert-dismissable fade in">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		{{ flash.getMessage('info') | first }}
+	</div>
+{% endif %}
+
+{% if flash.getMessage('error') %}
+	<div class="alert alert-danger alert-dismissable fade in">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		{{ flash.getMessage('error') | first }}
+	</div>
+{% endif %}
+
+{% if flash.getMessage('warning') %}
+	<div class="alert alert-warning alert-dismissable fade in">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		{{ flash.getMessage('warning') | first }}
+	</div>
+{% endif %}

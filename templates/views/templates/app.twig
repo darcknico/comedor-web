@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>App Comedor Universitario</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Comedor Universitario " name="description" />
+    <meta content="Ricardo" name="author" />
+
+	</head>
+	{% if auth.check %}
+	<body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo">
+		<!-- BEGIN HEADER -->
+	    <div class="page-header navbar navbar-fixed-top">
+	      <!-- BEGIN HEADER INNER -->
+	      <div class="page-header-inner ">
+          <!-- BEGIN LOGO -->
+          <div class="page-logo">
+              <a href="#">
+                  <img src="{{ base_url() }}/metronic/assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" /> </a>
+              <div class="menu-toggler sidebar-toggler">
+                  <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+              </div>
+          </div>
+          <!-- END LOGO -->
+          <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+          <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
+          <!-- END RESPONSIVE MENU TOGGLER -->
+          <!-- BEGIN PAGE ACTIONS
+          <!-- BEGIN PAGE TOP -->
+          <div class="page-top">
+              <!-- BEGIN TOP NAVIGATION MENU -->
+              {% include 'templates/partials/navigation.twig' %}
+              <!-- END TOP NAVIGATION MENU -->
+          </div>
+          <!-- END PAGE TOP -->
+	      </div>
+	      <!-- END HEADER INNER -->
+	    </div>
+    <!-- END HEADER -->
+		<!-- BEGIN HEADER & CONTENT DIVIDER -->
+    <div class="clearfix"> </div>
+    <!-- END HEADER & CONTENT DIVIDER -->
+		<!-- BEGIN CONTAINER -->
+      <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+				{% include 'templates/partials/sidebar.twig' %}
+        <!-- BEGIN QUICK SIDEBAR -->
+        <!-- END QUICK SIDEBAR -->
+				<!-- BEGIN CONTENT -->
+				{% block content %}{% endblock %}
+        <!-- END CONTENT -->
+      </div>
+    <!-- END CONTAINER -->
+		<!-- BEGIN FOOTER -->
+		{% include 'templates/partials/footer.twig'%}
+		<!-- END FOOTER -->
+
+    <!--[if lt IE 9]>
+				<script src="{{ base_url() }}/metronic/assets/global/plugins/respond.min.js"></script>
+				<script src="{{ base_url() }}/metronic/assets/global/plugins/excanvas.min.js"></script>
+				<script src="{{ base_url() }}/metronic/assets/global/plugins/ie8.fix.min.js"></script>
+			<![endif]-->
+    <!-- BEGIN CORE PLUGINS -->
+
+	</body>
+	{% else %}
+	{% include 'templates/partials/user_login.twig' %}
+	{% endif %}
+</html>

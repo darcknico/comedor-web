@@ -1,0 +1,59 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+<div class="col-lg-12">
+				{% if old.id %}
+				<h2>Modificar Menu</h2>
+				{% else %}
+				<h2>Agregar Menu</h2>
+				{% endif %}
+				<div class="col-md-8">
+					{% if old.id %}
+					<form action="{{ path_for('comedor.menu.edit',{'id':old.idMenu}) }}" method="post" autocomplete="off">
+					{% else %}
+					<form action="{{ path_for('comedor.menu.new') }}" method="post" autocomplete="off">
+					{% endif %}
+						<div class="form-group{{ errors.fecha ? ' has-error' : ''}} ">
+							<label for="fecha">Fecha</label>
+							<input type="date" name="fecha" id="fecha" class="form-control" value="{{ old.fecha }}" {{ old.idMenu ? ' readonly':''}}>
+							{% if errors.fecha %}
+								<span class="help-block">{{ errors.fecha | first }}</span>
+							{% endif %}
+						</div>
+
+						<div class="form-group{{ errors.cantidad ? ' has-error' : ''}}">
+							<label for="cantidad">Cantidad</label>
+							<input type="number" min="0" max="500" step="1" name="cantidad" id="cantidad" class="form-control" value="{{ old.cantidad }}">
+							{% if errors.cantidad %}
+								<span class="help-block">{{ errors.cantidad | first }}</span>
+							{% endif %}
+						</div>
+
+						<div class="form-group{{ errors.precio ? ' has-error' : ''}}">
+							<label for="cantidad">Precio</label>
+							<input type="number" min="0" max="500" step="0.01" name="precio" id="precio" class="form-control" value="{{ old.precio }}">
+							{% if errors.precio %}
+								<span class="help-block">{{ errors.precio | first }}</span>
+							{% endif %}
+						</div>
+
+						<div class="form-group{{ errors.descripcion ? ' has-error' : ''}}">
+							<label for="descripcion">Descripcion</label>
+							<input type="text" min="0" name="descripcion" id="descripcion" class="form-control" value="{{ old.descripcion }}">
+							{% if errors.descripcion %}
+								<span class="help-block">{{ errors.descripcion | first }}</span>
+							{% endif %}
+						</div>
+
+						{% if old.idMenu %}
+						<button class="btn btn-3">Modificar</button>
+						{% else %}
+						<button class="btn btn-3">Agregar</button>
+						{% endif %}
+						<a class="btn btn-3" href="{{ path_for('comedor.menu') }}">o Volver al Listado de Menus</a>
+
+						{{ csrf.field | raw }}
+					</form>
+				</div>
+			</div>
+{% endblock %}

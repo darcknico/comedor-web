@@ -1,0 +1,37 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+{% include 'templates/partials/includecss.twig' %}
+
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+		<!-- BEGIN CONTENT BODY -->
+		<div class="page-content">
+				<!-- BEGIN PAGE HEAD-->
+				<div class="page-head">
+						<!-- BEGIN PAGE TITLE -->
+						<div class="page-title">
+								<h1>INICIO
+										<small>...</small>
+								</h1>
+						</div>
+						<!-- END PAGE TITLE -->
+				</div>
+				<!-- END PAGE HEAD-->
+				<!-- BEGIN PAGE BREADCRUMB -->
+				<ul class="page-breadcrumb breadcrumb">
+						<li>
+								<a href="{{ path_for('home') }}">Inicio</a>
+								<i class="fa fa-circle"></i>
+						</li>
+				</ul>
+				<!-- END PAGE BREADCRUMB -->
+				{% include 'templates/partials/flash.twig' %}
+		</div>
+		<!-- END CONTENT BODY -->
+</div>
+<!-- END CONTENT -->
+
+
+{% include 'templates/partials/includejs.twig' %}
+{% endblock %}
