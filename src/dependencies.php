@@ -62,7 +62,7 @@ $container['csrf'] = function($container){
 $container['client'] = function ($container){
   return new \GuzzleHttp\Client([
     'headers' => [ 'Content-Type' => 'application/json' ],
-    'base_uri' => 'http://158.69.198.138/proyectos/apirest.slim/public/',
+    'base_uri' => 'http://localhost/proyectos/comedor-rest/public/',
     //'base_uri' => 'http://proyectosinformaticos.esy.es/apirest.slim/public/',
     //'base_uri' => 'http://localhost:8080/apirest.slim/public/',
     'timeout'  => 5.0,
