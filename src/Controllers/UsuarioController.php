@@ -9,7 +9,14 @@ class UsuarioController extends Controller{
 
 	public function lista($request,$response)
 	{
-		$res = $this->client->get('usuario');
+		$res = $this->client->get(
+			'usuario',
+			[
+        'headers'=> [
+          'Authorization' => $this->auth->Authorization()
+    		]
+			]
+		);
     $json = json_decode($res->getBody(), true);
     //$this->flash->addMessage('info', $json['resultado']);
     return $this->view->render($response,'usuario/lista.twig',[
@@ -25,7 +32,14 @@ class UsuarioController extends Controller{
 
 	public function get($request,$response,$args){
     try{
-      $res = $this->client->get('usuario/'.$args['id']);
+      $res = $this->client->get(
+				'usuario/'.$args['id'],
+				[
+	        'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
       $json = json_decode($res->getBody(), true);
   		return $this->view->render($response, 'usuario/usuario.twig',[
         'old'=>$json['salida']
@@ -45,13 +59,19 @@ class UsuarioController extends Controller{
 
   public function edit($request,$response,$args){
     try{
-      $res = $this->client->put('usuario/'.$args['id'],[
-        'json' =>[
-          'nombre'=> $request->getParam('nombre'),
-					'apellido' => $request->getParam('apellido'),
-					'estado' => $request->getParam('estado')
-        ]
-      ]);
+      $res = $this->client->put(
+				'usuario/'.$args['id'],
+				[
+	        'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		],
+	        'json' =>[
+	          'nombre'=> $request->getParam('nombre'),
+						'apellido' => $request->getParam('apellido'),
+						'estado' => $request->getParam('estado')
+        	]
+      	]
+			);
       $json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.usuario'));
@@ -73,7 +93,14 @@ class UsuarioController extends Controller{
 
   public function delete($request,$response,$args){
     try{
-      $res = $this->client->delete('usuario/'.$args['id']);
+      $res = $this->client->delete(
+				'usuario/'.$args['id'],
+				[
+	        'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
       $json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.usuario'));

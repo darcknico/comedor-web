@@ -11,11 +11,14 @@ class TicketController extends Controller{
 	public function lista($request,$response)
 	{
     try{
-  		$res = $this->client->get('ticket',[
-        'headers'=> [
-          'token' => $this->auth->user()['token']
-        ]
-      ]);
+  		$res = $this->client->get(
+				'ticket',
+				[
+	        'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	        ]
+	      ]
+			);
       $json = json_decode($res->getBody(), true);
       return $this->view->render($response,'comedor/ticket/lista.twig',[
         'data'=>$json['salida']
@@ -36,7 +39,14 @@ class TicketController extends Controller{
 	public function nuevo($request,$response,$args)
 	{
     try{
-			$res = $this->client->get('menu/'.$args['idMenu']);
+			$res = $this->client->get(
+				'menu/'.$args['idMenu'],
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
 			$json = json_decode($res->getBody(), true);
 			//$this->flash->addMessage('info', $json['resultado']);
 			return $this->view->render($response,'comedor/menu/ticket.twig',[
@@ -60,11 +70,14 @@ class TicketController extends Controller{
 	{
     var_dump('menu/'.$args['idMenu'].'/ticket');
 		try{
-			$res = $this->client->post('menu/'.$args['idMenu'].'/ticket',
-				['headers'=> [
-					'token' => $this->auth->user()['token']
+			$res = $this->client->post(
+				'menu/'.$args['idMenu'].'/ticket',
+				[
+					'headers'=> [
+						'Authorization' => $this->auth->Authorization()
+					]
 				]
-			]);
+			);
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('success', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.menu'));
@@ -85,15 +98,25 @@ class TicketController extends Controller{
 
 	public function get($request,$response,$args){
     try{
-			$us = $this->client->get('usuario',[
-        'headers'=> [
-          'token' => $this->auth->user()['token']
-        ]
-      ]);
+			$us = $this->client->get(
+				'usuario',
+				[
+	        'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	        ]
+	      ]
+			);
 			$json = json_decode($us->getBody(), true);
 
 			$this->auth->attempt($json['salida']);
-      $res = $this->client->get('menu/'.$args['id']);
+      $res = $this->client->get(
+				'menu/'.$args['id'],
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
       $json = json_decode($res->getBody(), true);
   		return $this->view->render($response, 'comedor/menu/menu.twig',[
         'old'=>$json['salida'][0]
@@ -114,7 +137,14 @@ class TicketController extends Controller{
 
   public function delete($request,$response,$args){
     try{
-      $res = $this->client->delete('ticket/'.$args['id']);
+      $res = $this->client->delete(
+				'ticket/'.$args['id'],
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
       $json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('success', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.ticket'));
@@ -135,6 +165,7 @@ class TicketController extends Controller{
 		try{
       $res = $this->client->get('menu',[
         'headers' =>[
+					'Authorization' => $this->auth->Authorization(),
           'fecha'=> $args['fecha']
         ]
       ]);
@@ -158,6 +189,7 @@ class TicketController extends Controller{
 		try{
 			$res = $this->client->get('ticket',[
 				'headers'=> [
+					'Authorization' => $this->auth->Authorization(),
           'codigo' => $request->getQueryParam('codigo'),
         ]
 			]);
@@ -169,11 +201,17 @@ class TicketController extends Controller{
 
 	public function validar($request,$response,$args){
 		try{
-			$res = $this->client->put('ticket/'.$request->getParam('id'),[
-				'json'=>[
-					'idMenu' => $args['id']
+			$res = $this->client->put(
+				'ticket/'.$request->getParam('id'),
+				[
+					'headers'=> [
+						'Authorization' => $this->auth->Authorization(),
+					],
+					'json'=>[
+						'idMenu' => $args['id']
+					]
 				]
-			]);
+			);
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.ticket.start',[

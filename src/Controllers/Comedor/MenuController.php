@@ -9,7 +9,14 @@ class MenuController extends Controller{
 
 	public function lista($request,$response)
 	{
-		$res = $this->client->get('menu');
+		$res = $this->client->get(
+			'menu',
+			[
+        'headers'=> [
+          'Authorization' => $this->auth->Authorization()
+    		]
+			]
+		);
     $json = json_decode($res->getBody(), true);
     return $this->view->render($response,'comedor/menu/lista.twig',[
       'data'=>$json['salida'],
@@ -28,13 +35,18 @@ class MenuController extends Controller{
 
 		try{
 			$res = $this->client->post('menu',
-				['json'=> [
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		],
+					'json'=> [
 					'fecha' => $date,
 					'cantidad' => $request->getParam('cantidad'),
 					'precio' => $request->getParam('precio'),
 					'descripcion' => $request->getParam('descripcion')
+					]
 				]
-			]);
+			);
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.menu'));
@@ -55,9 +67,23 @@ class MenuController extends Controller{
 
 	public function get($request,$response,$args){
     try{
-      $res = $this->client->get('menu/'.$args['id']);
+      $res = $this->client->get(
+				'menu/'.$args['id'],
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
       $old = json_decode($res->getBody(), true);
-			$res = $this->client->get('menu');
+			$res = $this->client->get(
+				'menu',
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		]
+				]
+			);
 			$data = json_decode($res->getBody(), true);
   		return $this->view->render($response, 'comedor/menu/lista.twig',[
 				'old'=>$old['salida'],
@@ -79,13 +105,19 @@ class MenuController extends Controller{
 
   public function edit($request,$response,$args){
     try{
-      $res = $this->client->put('menu/'.$args['id'],[
-        'json' =>[
-          'cantidad'=> $request->getParam('cantidad'),
-					'precio' => $request->getParam('precio'),
-					'descripcion' => $request->getParam('descripcion')
-        ]
-      ]);
+      $res = $this->client->put(
+				'menu/'.$args['id'],
+				[
+					'headers'=> [
+	          'Authorization' => $this->auth->Authorization()
+	    		],
+	        'json' =>[
+	          'cantidad'=> $request->getParam('cantidad'),
+						'precio' => $request->getParam('precio'),
+						'descripcion' => $request->getParam('descripcion')
+	        ]
+      	]
+			);
       $json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.menu'));
@@ -106,7 +138,14 @@ class MenuController extends Controller{
 
   public function delete($request,$response,$args){
     try{
-      $res = $this->client->delete('menu/'.$args['id']);
+      $res = $this->client->delete(
+				'menu/'.$args['id'],
+				[
+				'headers'=> [
+          'Authorization' => $this->auth->Authorization()
+    			]
+				]
+			);
       $json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
 			return $response->withRedirect($this->router->pathFor('comedor.menu'));
@@ -126,7 +165,14 @@ class MenuController extends Controller{
 
 	public function finalizar($request,$response,$args){
     try{
-      $res = $this->client->post('menu/'.$args['id']);
+      $res = $this->client->post(
+				'menu/'.$args['id'],
+				[
+				'headers'=> [
+          'Authorization' => $this->auth->Authorization()
+    			]
+				]
+			);
       $json = json_decode($res->getBody(), true);
   		return $response->withRedirect($this->router->pathFor('home'));
     } catch (TransferException $e) {

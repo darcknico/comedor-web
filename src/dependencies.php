@@ -65,7 +65,7 @@ $container['client'] = function ($container){
     'base_uri' => 'http://localhost/proyectos/comedor-rest/public/',
     //'base_uri' => 'http://proyectosinformaticos.esy.es/apirest.slim/public/',
     //'base_uri' => 'http://localhost:8080/apirest.slim/public/',
-    'timeout'  => 5.0,
+    'timeout'  => 15.0,
   ]);
 };
 $container['UsuarioController'] = function ($container) {

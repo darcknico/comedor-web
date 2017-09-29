@@ -30,7 +30,7 @@ class AuthController extends Controller{
 			]);
 			$json = json_decode($respuesta->getBody(), true);
 			$this->flash->addMessage('info', $json['resultado']);
-			$this->auth->attempt($json['salida']);
+			$this->auth->attempt($json['salida'],$json['Authorization'],$json['refresh_token']);
 			return $response->withRedirect($this->router->pathFor('home'));
 
 		} catch (ClientException $e) {
