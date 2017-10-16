@@ -49,7 +49,7 @@ class UsuarioController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -81,7 +81,7 @@ class UsuarioController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -110,7 +110,7 @@ class UsuarioController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}

@@ -28,7 +28,7 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -57,7 +57,7 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -87,7 +87,7 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -126,7 +126,7 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -153,7 +153,7 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -178,7 +178,7 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -229,13 +229,34 @@ class TicketController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
 			return $response->withRedirect($this->router->pathFor('comedor.ticket.start',[
         'fecha'=>$args['fecha']
       ]));
+		}
+  }
+
+	public function validarAjax($request,$response){
+		try{
+			$res = $this->client->put(
+				'ticket/'.$request->getQueryParam('idTicket'),
+				[
+					'headers'=> [
+						'Authorization' => $this->auth->Authorization(),
+					],
+					'json'=>[
+						'idMenu' => $request->getQueryParam('idMenu')
+					]
+				]
+			);
+			return $response->withJson(json_decode($res->getBody(), true)['salida']);
+    } catch (TransferException $e) {
+			$res = $e->getResponse();
+			$json = json_decode($res->getBody(), true);
+			return $response->withStatus(400)->withJson($json);
 		}
   }
 }

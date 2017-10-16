@@ -3,14 +3,11 @@
 namespace App\Middleware;
 
 class ValidationErrorsMiddleware extends Middleware{
-	
+
 	public function __invoke($request, $response, $next){
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-		}
-		if (isset($_SESSION['errors'])) {
-			$this->container->view->getEnvironment()->addGlobal('errors', $_SESSION['errors']);
-			unset($_SESSION['errors']);
+		if ($this->container->session->has('errors')) {
+			$this->container->view->getEnvironment()->addGlobal('errors', $this->container->session->get('errors'));
+			$this->container->session->delete('errors');
 		}
 
 		$response = $next($request,$response);

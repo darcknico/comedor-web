@@ -70,8 +70,8 @@
                                 </a>
                                 <ul class="dropdown-menu pull-right">
                                     <li>
-                                        <a href="{{ path_for('comedor.menu.delete',{'id':old.id} ) }}">
-                                            <i class="fa fa-trash-o"></i> Finalizar </a>
+                                        <a href="{{ path_for('comedor.menu.finalizar',{'id':menu.id} ) }}">
+                                            <i class="fa fa-hourglass-end"></i> Finalizar </a>
                                     </li>
                                 </ul>
                             </div>
@@ -80,6 +80,7 @@
 
                     <div class="portlet-body form">
 												<input type="hidden" id="id" name="id" value="{{menu.id ? menu.id:0}}">
+												<input type="hidden" id="idTicket" name="idTicket">
 												<div class="form-body">
 													<div class="form-group">
                             <div class="input-group date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d" data-date-language="es">
@@ -158,7 +159,7 @@
                                 <!-- END SIDEBAR USER TITLE -->
                                 <!-- SIDEBAR BUTTONS -->
                                 <div class="profile-userbuttons">
-                                    <button type="button" class="btn btn-circle green btn-sm">Validar</button>
+                                    <a id="btnValidarTicket" class="btn btn-circle green btn-sm">Validar</a>
                                 </div>
                                 <!-- END SIDEBAR BUTTONS -->
                                 <!-- SIDEBAR MENU -->
@@ -213,43 +214,22 @@ jQuery(document).ready(function() {
 	        validarCodigo();
 	    }
 	});
-	function validarCodigo(){
-		var codigo =
-		$('#ticketCodigo').val();
-		var noEncontrado = true;
-		if(codigo){
-			if(codigo.length == 18 ){
-				$.ajax({
-			    url: '{{ path_for('comedor.ticket.codigo') }}'+'?codigo='+codigo,
-			    type: 'GET',
-			    dataType: 'json',
-			    success: function(data){
-						if($('#fechaMenu').val()==data.fecha){
-							$('#nombreUsuario').text(data.usuario.apellido+' '+data.usuario.nombre);
-							toastr.success("El codigo del ticket es valido", "Ticket correto");
-							$('#usuario').show();
-							noEncontrado = false;
-							$('#ticketCodigo').val(' ');
-							window.location.hash = 'usuario';
-						} else {
-							toastr.error("El codigo del ticket corresponde a otra fecha", "Ticket incorrecto");
-						}
-			    },
-					error: function(){
-						toastr.error("El codigo ingresado no esta correto", "Codigo no valido");
-					}
-			  });
-			} else {
-				toastr.warning("El codigo ingresado no corresponde a un formato valido", "Codigo no valido");
+
+	$("#btnValidarTicket").on('click',function() {
+		var idTicket = $("#idTicket").val();
+		var idMenu = $("#id").val();
+		$.ajax({
+			url: '{{ path_for('comedor.ticket.validar') }}'+'?idTicket='+idTicket+'&idMenu='+idMenu,
+			type: 'POST',
+			dataType: 'json',
+			success: function(data){
+				toastr.success("Se pudo validar el ticket.", "Ticket validado");
+			},
+			error: function(){
+				toastr.error("Ocurrio un error al validar el codigo.", "Ticket no validado");
 			}
-		} else {
-			toastr.warning("Debe ingresar un codigo", "Codigo vacio");
-		}
-		if(noEncontrado){
-			$('#usuario').hide();
-		}
-		return false;
-	};
+		});
+	});
 
 	toastr.options = {
 	  "closeButton": true,
@@ -266,6 +246,44 @@ jQuery(document).ready(function() {
 	  "hideMethod": "fadeOut"
 	}
 });
+
+function validarCodigo(){
+	var codigo = $('#ticketCodigo').val();
+	var noEncontrado = true;
+	if(codigo){
+		if(codigo.length >0 ){
+			$.ajax({
+				url: '{{ path_for('comedor.ticket.codigo') }}'+'?codigo='+codigo,
+				type: 'GET',
+				dataType: 'json',
+				success: function(data){
+					if($('#fechaMenu').val()==data.fecha){
+						$("#idTicket").val(data.id);
+						$('#nombreUsuario').text(data.usuario.apellido+' '+data.usuario.nombre);
+						toastr.success("El codigo del ticket es valido", "Ticket correto");
+						$('#usuario').show();
+						noEncontrado = false;
+						$('#ticketCodigo').val(' ');
+						window.location.hash = 'usuario';
+					} else {
+						toastr.error("El codigo del ticket corresponde a otra fecha", "Ticket incorrecto");
+					}
+				},
+				error: function(){
+					toastr.error("El codigo ingresado no esta correto", "Codigo no valido");
+				}
+			});
+		} else {
+			toastr.warning("El codigo ingresado no corresponde a un formato valido", "Codigo no valido");
+		}
+	} else {
+		toastr.warning("Debe ingresar un codigo", "Codigo vacio");
+	}
+	if(noEncontrado){
+		$('#usuario').hide();
+	}
+	return false;
+};
 
 </script>
 

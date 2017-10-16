@@ -3,7 +3,7 @@
 namespace App\Middleware;
 
 /**
-* 
+*
 */
 class Middleware{
 	

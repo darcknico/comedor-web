@@ -39,6 +39,12 @@ $container['view'] = function($container){
 	return $view;
 };
 
+$container['session'] = function ($container) {
+    return new \Adbar\Session(
+        $container->get('settings')['session']['namespace']
+    );
+};
+
 $container['HomeController'] = function ($container) {
 	return new \App\Controllers\HomeController($container);
 };

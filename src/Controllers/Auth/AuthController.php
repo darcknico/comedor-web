@@ -37,7 +37,7 @@ class AuthController extends Controller{
 			$respuesta = $e->getResponse();
 			$json = json_decode($respuesta->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
-			$_SESSION['errors']= $json['salida'];
+			$this->session->set('errors', $json['salida']);
 			return $response->withRedirect($this->router->pathFor('auth.signin'));
 		}
 	}
@@ -56,7 +56,8 @@ class AuthController extends Controller{
 				['json'=> [
 					'nombre'=> $request->getParam('nombre'),
 					'dni' => $request->getParam('dni'),
-					'contraseña' => $request->getParam('contraseña')
+					'contraseña' => $request->getParam('contraseña'),
+					'apellido' => $request->getParam('apellido')
 				]
 			]);
 			$json = json_decode($respuesta->getBody(), true);
@@ -68,7 +69,7 @@ class AuthController extends Controller{
 			$respuesta = $e->getResponse();
 			$json = json_decode($respuesta->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
-			$_SESSION['errors']= $json['salida'];
+			$this->session->set('errors', $json['salida']);
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
 	}

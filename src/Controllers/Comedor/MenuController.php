@@ -56,7 +56,7 @@ class MenuController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -94,7 +94,7 @@ class MenuController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -126,7 +126,7 @@ class MenuController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -155,7 +155,7 @@ class MenuController extends Controller{
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
@@ -174,17 +174,18 @@ class MenuController extends Controller{
 				]
 			);
       $json = json_decode($res->getBody(), true);
+			$this->flash->addMessage('success', $json['resultado']);
   		return $response->withRedirect($this->router->pathFor('home'));
     } catch (TransferException $e) {
 			$res = $e->getResponse();
 			$json = json_decode($res->getBody(), true);
 			$this->flash->addMessage('error', $json['resultado']);
 			if($res->getStatusCode()==400) {
-      	$_SESSION['errors']= $json['salida'];
+      	$this->session->set('errors', $json['salida']);
 			} elseif (isset($json['salida'])) {
 				$this->flash->addMessage('warning', $json['salida']);
 			}
-			return $response->withRedirect($this->router->pathFor('comedor.ticket.start'));
+			return $response->withRedirect($this->router->pathFor('home'));
 		}
 	}
 }

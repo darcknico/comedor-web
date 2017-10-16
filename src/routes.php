@@ -42,6 +42,7 @@ $app->group('',function () {
 
 	$this->get('/menu/{fecha}/validar','TicketController:empezar')->setName('comedor.ticket.start');
 	$this->post('/menu/{id}/{fecha}/validar/','TicketController:validar')->setName('comedor.ticket.next');
+	$this->post('/ticket/validar','TicketController:validarAjax')->setName('comedor.ticket.validar');
 	$this->get('/menu/{id}/cerrar','TicketController:cerrar')->setName('comedor.ticket.close');
 
 	$this->get('/ticket/validar/codigo','TicketController:comprobarTicket')->setName('comedor.ticket.codigo');
